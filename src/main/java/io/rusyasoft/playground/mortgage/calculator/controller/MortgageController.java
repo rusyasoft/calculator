@@ -2,7 +2,7 @@ package io.rusyasoft.playground.mortgage.calculator.controller;
 
 import io.rusyasoft.playground.mortgage.calculator.InputParameters;
 import io.rusyasoft.playground.mortgage.calculator.service.MortgageService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/mortgage/")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class MortgageController {
 
     private MortgageService mortgageService;
@@ -22,19 +22,19 @@ public class MortgageController {
 
     @GetMapping("/calculate")
     public Double calculate(
-            @RequestParam(name = "propertyPrice", required = true)
+            @RequestParam(name = "propertyPrice")
             Long propertyPrice,
 
-            @RequestParam(name = "downPayment", required = true)
+            @RequestParam(name = "downPayment")
             Long downPayment,
 
-            @RequestParam(name = "annualInterest", required = true)
+            @RequestParam(name = "annualInterest")
             Double annualInterest,
 
-            @RequestParam(name = "ammortPeriod", required = true)
+            @RequestParam(name = "ammortPeriod")
             Integer ammortPeriod,
 
-            @RequestParam(name = "paymentSchedule", required = true)
+            @RequestParam(name = "paymentSchedule")
             String paymentSchedule
     ) {
         InputParameters inputParameters = InputParameters.builder()

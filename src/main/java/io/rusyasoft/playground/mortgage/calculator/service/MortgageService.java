@@ -13,20 +13,32 @@ public class MortgageService {
 
     public MortgageService() {
         fillNumOfPaymentsPerYear();
-
     }
+
+    // Doesn't look good, need some improvement
     public Double calculate(InputParameters inputParameters) {
         double principal = (double)inputParameters.propertyPrice() - (double)inputParameters.downPayment();
-
         double numOfPaymentPerYear = numOfPaymentsPerYear.get(inputParameters.paymentSchedule());
-
-        Double intRatePerPaymentSchedule = inputParameters.annualInterest() / numOfPaymentPerYear;
+        double interestRate = adaptPercentile(inputParameters.annualInterest());
+        double intRatePerPaymentSchedule = getInterestRatePerPaymentSchedule(interestRate, numOfPaymentPerYear);
         double totalNumOfPayments = inputParameters.ammortPeriod() * numOfPaymentPerYear;
 
         Double onePlusNpow = Math.pow(intRatePerPaymentSchedule + 1.0, totalNumOfPayments);
         double intRatePerPaymentScheduleMultOnePlusNpow = intRatePerPaymentSchedule * onePlusNpow;
         Double paymentPerSchedule = (principal * intRatePerPaymentScheduleMultOnePlusNpow) / (onePlusNpow - 1.0);
         return paymentPerSchedule;
+    }
+
+    private Double getInterestRatePerPaymentSchedule(double interestRate, double numOfPaymentPerYear) {
+        return interestRate / numOfPaymentPerYear;
+    }
+
+    private double adaptPercentile(double notAdaptedPercentile) {
+        if (notAdaptedPercentile >= 1.0) {
+            return notAdaptedPercentile / 100.0;
+        }
+
+        return notAdaptedPercentile;
     }
 
     private void fillNumOfPaymentsPerYear() {

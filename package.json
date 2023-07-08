@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config=webpack.config.js --env build=dev",
-    "watch": "webpack --watch -d --output ./build/classes/static/built/bundle.js"
+    "watch": "webpack --watch --config=webpack.config.js --env build=dev"
   },
   "author": "Rustam Rakhimov",
   "license": "MIT",
@@ -14,6 +14,7 @@
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-react": "^7.22.5",
     "babel-loader": "^9.1.2",
+    "react-devtools": "^4.27.8",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4"
   },

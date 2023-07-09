@@ -1,6 +1,7 @@
 package io.rusyasoft.playground.mortgage.calculator.service;
 
-import io.rusyasoft.playground.mortgage.calculator.InputParameters;
+import io.rusyasoft.playground.mortgage.calculator.model.InputParameters;
+import io.rusyasoft.playground.mortgage.calculator.model.PaymentPeriod;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ public class MortgageServiceTest {
                 .downPayment(DOWN_PAYMENT)
                 .annualInterest(ANNUAL_INTEREST)
                 .ammortPeriod(AMMORT_PERIOD)
-                .paymentSchedule(PAYMENT_SCHEDULE)
+                .paymentSchedule(PaymentPeriod.valueOfLabel(PAYMENT_SCHEDULE))
                 .build();
 
         Double paymentPerPaymentSchedule = mortgageService.calculate(inputParameters);
@@ -42,7 +43,7 @@ public class MortgageServiceTest {
                 .downPayment(DOWN_PAYMENT)
                 .annualInterest(ANNUAL_INTEREST_IN_PERCENTILE)
                 .ammortPeriod(AMMORT_PERIOD)
-                .paymentSchedule(PAYMENT_SCHEDULE)
+                .paymentSchedule(PaymentPeriod.valueOfLabel(PAYMENT_SCHEDULE))
                 .build();
 
         Double paymentPerPaymentSchedule = mortgageService.calculate(inputParameters);

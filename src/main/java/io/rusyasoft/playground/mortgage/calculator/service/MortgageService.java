@@ -1,6 +1,6 @@
 package io.rusyasoft.playground.mortgage.calculator.service;
 
-import io.rusyasoft.playground.mortgage.calculator.InputParameters;
+import io.rusyasoft.playground.mortgage.calculator.model.InputParameters;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -9,16 +9,10 @@ import java.util.Map;
 @Service
 public class MortgageService {
 
-    private Map<String, Integer> numOfPaymentsPerYear;
-
-    public MortgageService() {
-        fillNumOfPaymentsPerYear();
-    }
-
     // Doesn't look good, need some improvement
     public Double calculate(InputParameters inputParameters) {
         double principal = (double)inputParameters.propertyPrice() - (double)inputParameters.downPayment();
-        double numOfPaymentPerYear = numOfPaymentsPerYear.get(inputParameters.paymentSchedule());
+        double numOfPaymentPerYear = inputParameters.paymentSchedule().numOfPayments;
         double interestRate = adaptPercentile(inputParameters.annualInterest());
         double intRatePerPaymentSchedule = getInterestRatePerPaymentSchedule(interestRate, numOfPaymentPerYear);
         double totalNumOfPayments = inputParameters.ammortPeriod() * numOfPaymentPerYear;
@@ -39,13 +33,5 @@ public class MortgageService {
         }
 
         return notAdaptedPercentile;
-    }
-
-    private void fillNumOfPaymentsPerYear() {
-        numOfPaymentsPerYear = new HashMap<>();
-        numOfPaymentsPerYear.put("monthly", 12);
-        numOfPaymentsPerYear.put("semi-monthly", 24);
-        numOfPaymentsPerYear.put("bi-weekly", 26);
-        numOfPaymentsPerYear.put("weekly", 52);
     }
 }

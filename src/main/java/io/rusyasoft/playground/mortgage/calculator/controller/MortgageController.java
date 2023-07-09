@@ -1,6 +1,7 @@
 package io.rusyasoft.playground.mortgage.calculator.controller;
 
-import io.rusyasoft.playground.mortgage.calculator.InputParameters;
+import io.rusyasoft.playground.mortgage.calculator.model.InputParameters;
+import io.rusyasoft.playground.mortgage.calculator.model.PaymentPeriod;
 import io.rusyasoft.playground.mortgage.calculator.service.MortgageService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +43,7 @@ public class MortgageController {
                 .downPayment(downPayment)
                 .annualInterest(annualInterest)
                 .ammortPeriod(ammortPeriod)
-                .paymentSchedule(paymentSchedule)
+                .paymentSchedule(PaymentPeriod.valueOfLabel(paymentSchedule))
                 .build();
 
         return mortgageService.calculate(inputParameters);

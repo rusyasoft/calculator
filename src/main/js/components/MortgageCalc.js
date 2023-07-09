@@ -27,7 +27,7 @@ const MortgageCalc = () => {
 
         setMcase((prevMcase) => ({
             ...prevMcase,
-            [name]: value !== '' ? parseInt(value) : 0
+            [name]: value !== '' ? (name != 'paymentSchedule'? parseInt(value) : value) : 0
         }));
     } 
 
@@ -101,12 +101,15 @@ const MortgageCalc = () => {
             <br />
 
             <label>Payment Schedule: </label>
-            <input 
-                type = "text"
-                name = "paymentSchedule"
-                value = {mcase['paymentSchedule']}
-                onChange = {handleInputChange}
-            />
+            <select
+                name="paymentSchedule"
+                onChange={handleInputChange}
+            >
+                <option value={'monthly'}>Monthly</option>
+                <option value={'semi-monthly'}>Semi Monthly</option>
+                <option value={'bi-weekly'}>Be Weekly</option>
+                <option value={'weekly'}>Weekly</option>
+            </select>
             <br />
 
             <button onClick={handleSendByGet}>Send</button>

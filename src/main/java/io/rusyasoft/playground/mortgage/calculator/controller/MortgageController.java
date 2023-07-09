@@ -1,5 +1,6 @@
 package io.rusyasoft.playground.mortgage.calculator.controller;
 
+import io.rusyasoft.playground.mortgage.calculator.engine.mortgage.MortgageCalcResult;
 import io.rusyasoft.playground.mortgage.calculator.model.InputParameters;
 import io.rusyasoft.playground.mortgage.calculator.model.PaymentPeriod;
 import io.rusyasoft.playground.mortgage.calculator.service.MortgageService;
@@ -9,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static io.rusyasoft.playground.mortgage.calculator.engine.mortgage.MortgageCalcEngine.MORTGAGE_CALC_ENGINE;
+
 @RestController
 @RequestMapping("/mortgage/")
 @AllArgsConstructor
 public class MortgageController {
-
     private MortgageService mortgageService;
 
     @GetMapping("/health")
@@ -46,6 +48,11 @@ public class MortgageController {
                 .paymentSchedule(PaymentPeriod.valueOfLabel(paymentSchedule))
                 .build();
 
-        return mortgageService.calculate(inputParameters);
+        MortgageCalcResult calcResult = (MortgageCalcResult)mortgageService.calculate(MORTGAGE_CALC_ENGINE, inputParameters);
+        if (!calcResult.isCalculationSuccessfull()) {
+            throw new RuntimeException("Something went wrong while calculating!");
+        }
+
+        return calcResult.getResult();
     }
 }

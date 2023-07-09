@@ -1,5 +1,6 @@
 package io.rusyasoft.playground.mortgage.calculator.service;
 
+import io.rusyasoft.playground.mortgage.calculator.engine.mortgage.MortgageCalcResult;
 import io.rusyasoft.playground.mortgage.calculator.model.InputParameters;
 import io.rusyasoft.playground.mortgage.calculator.model.PaymentPeriod;
 import org.junit.jupiter.api.Assertions;
@@ -8,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static io.rusyasoft.playground.mortgage.calculator.engine.mortgage.MortgageCalcEngine.MORTGAGE_CALC_ENGINE;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -32,8 +35,9 @@ public class MortgageServiceTest {
                 .paymentSchedule(PaymentPeriod.valueOfLabel(PAYMENT_SCHEDULE))
                 .build();
 
-        Double paymentPerPaymentSchedule = mortgageService.calculate(inputParameters);
-        Assertions.assertEquals(2865.7242339126915, paymentPerPaymentSchedule);
+        MortgageCalcResult mortgageCalcResult = (MortgageCalcResult) mortgageService.calculate(MORTGAGE_CALC_ENGINE, inputParameters);
+        Assertions.assertTrue(mortgageCalcResult.isCalculationSuccessfull());
+        Assertions.assertEquals(2865.7242339126915, mortgageCalcResult.getResult());
     }
 
     @Test
@@ -46,7 +50,8 @@ public class MortgageServiceTest {
                 .paymentSchedule(PaymentPeriod.valueOfLabel(PAYMENT_SCHEDULE))
                 .build();
 
-        Double paymentPerPaymentSchedule = mortgageService.calculate(inputParameters);
-        Assertions.assertEquals(2865.7242339126915, paymentPerPaymentSchedule);
+        MortgageCalcResult mortgageCalcResult = (MortgageCalcResult) mortgageService.calculate(MORTGAGE_CALC_ENGINE, inputParameters);
+        Assertions.assertTrue(mortgageCalcResult.isCalculationSuccessfull());
+        Assertions.assertEquals(2865.7242339126915, mortgageCalcResult.getResult());
     }
 }

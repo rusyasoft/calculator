@@ -1,6 +1,9 @@
 package io.rusyasoft.playground.mortgage.calculator.service;
 
+import io.rusyasoft.playground.mortgage.calculator.engine.CalcEngine;
+import io.rusyasoft.playground.mortgage.calculator.engine.CalcResult;
 import io.rusyasoft.playground.mortgage.calculator.model.InputParameters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -9,29 +12,10 @@ import java.util.Map;
 @Service
 public class MortgageService {
 
-    // Doesn't look good, need some improvement
-    public Double calculate(InputParameters inputParameters) {
-        double principal = (double)inputParameters.propertyPrice() - (double)inputParameters.downPayment();
-        double numOfPaymentPerYear = inputParameters.paymentSchedule().numOfPayments;
-        double interestRate = adaptPercentile(inputParameters.annualInterest());
-        double intRatePerPaymentSchedule = getInterestRatePerPaymentSchedule(interestRate, numOfPaymentPerYear);
-        double totalNumOfPayments = inputParameters.ammortPeriod() * numOfPaymentPerYear;
+    @Autowired
+    Map<String, CalcEngine> engineContainer;
 
-        Double onePlusNpow = Math.pow(intRatePerPaymentSchedule + 1.0, totalNumOfPayments);
-        double intRatePerPaymentScheduleMultOnePlusNpow = intRatePerPaymentSchedule * onePlusNpow;
-        Double paymentPerSchedule = (principal * intRatePerPaymentScheduleMultOnePlusNpow) / (onePlusNpow - 1.0);
-        return paymentPerSchedule;
-    }
-
-    private Double getInterestRatePerPaymentSchedule(double interestRate, double numOfPaymentPerYear) {
-        return interestRate / numOfPaymentPerYear;
-    }
-
-    private double adaptPercentile(double notAdaptedPercentile) {
-        if (notAdaptedPercentile >= 1.0) {
-            return notAdaptedPercentile / 100.0;
-        }
-
-        return notAdaptedPercentile;
+    public CalcResult calculate(String engine, InputParameters inputParameters) {
+        return engineContainer.get(engine).calculate(inputParameters);
     }
 }

@@ -1,5 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import axios from 'axios';
+
 
 const MortgageCalc = () => {
     // const [mcase, setMcase] = useState({
@@ -63,60 +65,71 @@ const MortgageCalc = () => {
     }
 
     return (
-        <div>
-            <label>Property Price: </label>
-            <input 
-                type = "text"
-                name = "propertyPrice"
-                value = {mcase['propertyPrice']}
-                onChange = {handleInputChange}
-            />
-            <br />
-            
-            <label>Down payment: </label>
-            <input 
-                type = "text"
-                name = "downPayment"
-                value = {mcase['downPayment']}
-                onChange = {handleInputChange}
-            />
-            <br />
-            
-            <label>Annual Interest Rate (%): </label>
-            <input 
-                type = "text"
-                name = "annualInterest"
-                value = {mcase['annualInterest']}
-                onChange = {handleInputChange}
-            />
-            <br />
-
-            <label>Ammortization Period: </label>
-            <input 
-                type = "text"
-                name = "ammortPeriod"
-                value = {mcase['ammortPeriod']}
-                onChange = {handleInputChange}
-            />
-            <br />
-
-            <label>Payment Schedule: </label>
-            <select
-                name="paymentSchedule"
+        <Form>
+            <FormGroup>
+                <Label for="propertyPrice">Property Price:</Label>
+                <Input
+                type="text"
+                name="propertyPrice"
+                id="propertyPrice"
+                value={mcase.propertyPrice}
                 onChange={handleInputChange}
-            >
-                <option value={'monthly'}>Monthly</option>
-                <option value={'semi-monthly'}>Semi Monthly</option>
-                <option value={'bi-weekly'}>Be Weekly</option>
-                <option value={'weekly'}>Weekly</option>
-            </select>
-            <br />
+                />
+            </FormGroup>
 
-            <button onClick={handleSendByGet}>Send</button>
+            <FormGroup>
+                <Label for="downPayment">Down Payment:</Label>
+                <Input
+                type="text"
+                name="downPayment"
+                id="downPayment"
+                value={mcase.downPayment}
+                onChange={handleInputChange}
+                />
+            </FormGroup>
+
+            <FormGroup>
+                <Label for="annualInterest">Annual Interest Rate (%):</Label>
+                <Input
+                type="text"
+                name="annualInterest"
+                id="annualInterest"
+                value={mcase.annualInterest}
+                onChange={handleInputChange}
+                />
+            </FormGroup>
+
+            <FormGroup>
+                <Label for="ammortPeriod">Ammortization Period:</Label>
+                <Input
+                type="text"
+                name="ammortPeriod"
+                id="ammortPeriod"
+                value={mcase.ammortPeriod}
+                onChange={handleInputChange}
+                />
+            </FormGroup>
+
+            <FormGroup>
+                <Label for="paymentSchedule">Payment Schedule:</Label>
+                <Input
+                type="select"
+                name="paymentSchedule"
+                id="paymentSchedule"
+                onChange={handleInputChange}
+                >
+                <option value="monthly">Monthly</option>
+                <option value="semi-monthly">Semi Monthly</option>
+                <option value="bi-weekly">Bi-Weekly</option>
+                <option value="weekly">Weekly</option>
+                </Input>
+            </FormGroup>
+
+            <Button color="primary" onClick={handleSendByGet}>Send</Button>
             <br /><br />
 
-            <label>Payment per Period: {mresult.paymentPerPeriod}</label>
-        </div>
+            <Label>Payment per Period: {mresult.paymentPerPeriod}</Label>
+        </Form>
     )
 }
 

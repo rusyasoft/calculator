@@ -54,4 +54,18 @@ public class MortgageServiceTest {
         Assertions.assertTrue(mortgageCalcResult.isCalculationSuccessfull());
         Assertions.assertEquals(2865.7242339126915, mortgageCalcResult.getResult());
     }
+
+    @Test
+    public void calculateWithNegativePrincipalTest() {
+        InputParameters inputParameters = InputParameters.builder()
+                .propertyPrice(PROPERTY_PRICE)
+                .downPayment(PROPERTY_PRICE + 1)
+                .annualInterest(ANNUAL_INTEREST_IN_PERCENTILE)
+                .ammortPeriod(AMMORT_PERIOD)
+                .paymentSchedule(PaymentPeriod.valueOfLabel(PAYMENT_SCHEDULE))
+                .build();
+
+        MortgageCalcResult mortgageCalcResult = (MortgageCalcResult) mortgageService.calculate(MORTGAGE_CALC_ENGINE, inputParameters);
+        Assertions.assertFalse(mortgageCalcResult.isCalculationSuccessfull());
+    }
 }

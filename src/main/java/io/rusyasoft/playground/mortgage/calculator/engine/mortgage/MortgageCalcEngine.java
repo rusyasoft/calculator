@@ -4,6 +4,8 @@ import io.rusyasoft.playground.mortgage.calculator.engine.CalcEngine;
 import io.rusyasoft.playground.mortgage.calculator.model.InputParameters;
 import org.springframework.stereotype.Component;
 
+import java.util.IllformedLocaleException;
+
 @Component
 public class MortgageCalcEngine implements CalcEngine<InputParameters, MortgageCalcResult> {
 
@@ -20,6 +22,10 @@ public class MortgageCalcEngine implements CalcEngine<InputParameters, MortgageC
             Double onePlusNpow = Math.pow(intRatePerPaymentSchedule + 1.0, totalNumOfPayments);
             double intRatePerPaymentScheduleMultOnePlusNpow = intRatePerPaymentSchedule * onePlusNpow;
             Double paymentPerSchedule = (principal * intRatePerPaymentScheduleMultOnePlusNpow) / (onePlusNpow - 1.0);
+
+            if (paymentPerSchedule < 0.0) {
+                throw new IllformedLocaleException("Payment per schedule is not suppose to be negative");
+            }
 
             return new MortgageCalcResult(true, paymentPerSchedule);
         } catch (Exception ex) {
